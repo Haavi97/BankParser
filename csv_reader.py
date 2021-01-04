@@ -1,3 +1,4 @@
+import sys
 import csv
 import os
 import datetime as dt
@@ -6,6 +7,7 @@ import datetime as dt
 import user_data as ud
 
 fd = os.path.sep  # folder delimiter
+
 
 def reader(file_name, verbose=True):
     result = []
@@ -40,7 +42,9 @@ def reader(file_name, verbose=True):
     return result
 
 if __name__ == "__main__":
-    current_month = '{:02d}'.format( int( input("Please enter month:")))
-    csv_name = input("Please enter csv file name:")
-
-    reader(csv_name)
+    if len(sys.argv) == 1: 
+        current_month = '{:02d}'.format( int( input("Please enter month:")))
+        csv_name = input("Please enter csv file name:")
+        reader(csv_name)
+    else:
+        print(sys.argv)
