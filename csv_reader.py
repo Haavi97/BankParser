@@ -5,8 +5,6 @@ import datetime as dt
 # Personal libraries/scripts
 import user_data as ud
 
-current_month = dt.date.today().month
-csv_name = input("Please enter csv file name:")
 fd = os.path.sep  # folder delimiter
 
 def reader(file_name, verbose=True):
@@ -30,9 +28,19 @@ def reader(file_name, verbose=True):
                         print(f'{row[e]}', end='\t')
                 print('')
                 sign = '-' if buffer["Deebet/Kreedit (D/C)"] == 'D' else '+'
-                buffer['käive'] = float(sign + buffer['Summa'])
+                try:
+                    buffer['käive'] = float(buffer['Summa'])
+                except ValueError:
+                    print("Value Error")
+                
                 result.append(buffer)
                 line_count += 1
         if verbose:
             print(f'\nProcessed {line_count} lines')
     return result
+
+if __name__ == "__main__":
+    current_month = '{:02d}'.format( int( input("Please enter month:")))
+    csv_name = input("Please enter csv file name:")
+
+    reader(csv_name)
