@@ -1,6 +1,7 @@
 import sys
 import csv
 import os
+import copy as cp
 import datetime as dt
 
 # Personal libraries/scripts
@@ -19,32 +20,44 @@ def reader(file_name, verbose=True):
             for e in ud.fields:
                 print(f'{e}', end='\t')
             print('')
+        
+        buff_str = ''
+
         for row in csv_reader:
             if line_count == 0:
+                print(row, end='\n******\n\n')
                 line_count += 1
             else:
                 buffer = {}
                 for e in ud.fields.keys():
-                    buffer[e] = row[e]
+                    buffer[e] = cp.deepcopy(row[e])
                     if verbose:
-                        print(f'{row[e]}', end='\t')
-                print('')
-                sign = '-' if buffer["Deebet/Kreedit (D/C)"] == 'D' else '+'
+                        buff_str += f'{row[e]}' + '\t'
+                buff_str += '\n'
+
                 try:
-                    buffer['käive'] = float(buffer['Summa'])
+                    buffer['Summa'] = float(buffer['Summa'].replace(',', '.'))
                 except ValueError:
-                    print("Value Error")
+                    print('\n\n***********\n\n', file=sys.stderr)
+                    print("Value Error", file=sys.stderr)
+                    print(row, file=sys.stderr)
+                    print('\n\n***********\n\n', file=sys.stderr)
                 
                 result.append(buffer)
                 line_count += 1
+        print('\n\n' + buff_str)
+
         if verbose:
-            print(f'\nProcessed {line_count} lines')
+            print(f'\nProcessed {line_count} lines\n\n')
     return result
+
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: 
         current_month = '{:02d}'.format( int( input("Please enter month:")))
         csv_name = input("Please enter csv file name:")
-        reader(csv_name)
+        ret = reader(csv_name)
+        print(ret)
     else:
         print(sys.argv)
