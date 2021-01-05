@@ -24,27 +24,31 @@ def reader(file_name, verbose=True):
         buff_str = ''
 
         for row in csv_reader:
-            if line_count == 0:
-                print(row, end='\n******\n\n')
-                line_count += 1
-            else:
-                buffer = {}
-                for e in ud.fields.keys():
-                    buffer[e] = cp.deepcopy(row[e])
-                    if verbose:
-                        buff_str += f'{row[e]}' + '\t'
-                buff_str += '\n'
-
+            buffer = {}
+            for e in ud.fields.keys():
+                value = cp.deepcopy(row[e])
                 try:
-                    buffer['Summa'] = float(buffer['Summa'].replace(',', '.'))
+                    if value.isnumeric():
+                        buffer[e] = int(value)
+                    elif e == 'Summa':
+                        buffer['Summa'] = float(value.replace(',', '.'))
+                    elif value == '':
+                        value = '\t'
+                    else:
+                        buffer[e] = value
+                    if verbose:
+                        buff_str += f'{buffer[e]}' + '\t'
+                    
                 except ValueError:
                     print('\n\n***********\n\n', file=sys.stderr)
                     print("Value Error", file=sys.stderr)
                     print(row, file=sys.stderr)
                     print('\n\n***********\n\n', file=sys.stderr)
                 
-                result.append(buffer)
-                line_count += 1
+            buff_str += '\n'
+            
+            result.append(buffer)
+            line_count += 1
         print('\n\n' + buff_str)
 
         if verbose:
