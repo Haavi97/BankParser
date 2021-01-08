@@ -63,5 +63,7 @@ if __name__ == "__main__":
         csv_name = input("Please enter csv file name:")
         ret = reader(csv_name)
         print(ret)
+    elif sys.argv[1] == "hello":
+        print("hello world!")
     else:
         print(sys.argv)
