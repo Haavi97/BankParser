@@ -12,11 +12,11 @@ fd = os.path.sep  # folder delimiter
 
 def reader(file_name, verbose=True):
     result = []
-    current_path = os.getcwd() + fd + ud.data_path + fd + current_month + fd + file_name
+    current_path = os.getcwd() + fd + ud.data_path + fd + current_month + fd
     try: 
-        with open(current_path) as csv_file:
+        with open(current_path + file_name) as csv_file:
             csv_reader = csv.DictReader(csv_file, delimiter=";")
-            line_count = 0
+            
             if verbose:
                 print('Column names are:')
                 for e in ud.fields_list:
@@ -25,7 +25,10 @@ def reader(file_name, verbose=True):
             
             buff_str = ''
 
+            line_count = 0
             for row in csv_reader:
+                line_count += 1
+                print('Columns read: {}'.format(line_count), end='\r')
                 buffer = {}
                 for e in ud.fields_list:
                     value = cp.deepcopy(row[e])
@@ -46,15 +49,15 @@ def reader(file_name, verbose=True):
                         print("Value Error", file=sys.stderr)
                         print(row, file=sys.stderr)
                         print('\n\n***********\n\n', file=sys.stderr)
-                    
+                
                 buff_str += '\n'
                 
                 result.append(buffer)
-                line_count += 1
+            print('{0:20}'.format(''), end='\r')
             print('\n\n' + buff_str)
 
             if verbose:
-                print(f'\nProcessed {line_count} lines\n\n')
+                print('\nProcessed {} lines\n\n'.format(line_count))
     except FileNotFoundError:
         print('\n\n***********\n\n', file=sys.stderr)
         print('File Not Found Error.', file=sys.stderr)
@@ -70,9 +73,6 @@ def reader(file_name, verbose=True):
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: 
-        max_r = 1000000
-        for e in range(max_r):
-            print(str((e*100)//max_r) + ' %', end='\r')
         current_month = '{:02d}'.format( int( input("Please enter month:")))
         csv_name = input("Please enter csv file name:")
         result = reader(csv_name)
