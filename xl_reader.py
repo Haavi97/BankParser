@@ -1,20 +1,18 @@
-from openpyxl import load_workbook
-import user_data as ud
-import win32com.client as win32
 import sys
+from openpyxl import load_workbook
+from xls2xlsx import XLS2XLSX
+
+
+import user_data as ud
+
 
 
 def check_file(fname):
     if fname[-1] != 'x':
-        fname = ud.cwd + ud.fd + ud.data_path + ud.fd + current_month + ud.fd + xl_name
-        excel = win32.gencache.EnsureDispatch('Excel.Application')
-        wb = excel.Workbooks.Open(fname)
-
-        wb.SaveAs(fname + "x", FileFormat=51)  # FileFormat = 51 is for .xlsx extension
-        wb.Close()  # FileFormat = 56 is for .xls extension
-        excel.Application.Quit()
-
-        return fname + 'x'
+        fname_x = fname + 'x'
+        x2x = XLS2XLSX(fname)
+        x2x.to_xlsx(fname_x)
+        return fname_x
     else:
         return fname
 
