@@ -25,19 +25,27 @@ def xlsx_reader(header_row, data_row, data_col, fn):
     result = []
     buff_str = ''
     line_count = 0
+    stop = False
+
     for row in sheet.iter_rows(min_row=data_row, min_col=data_col):
+        if stop:
+            break
+
         line_count += 1
         buffer = {}
         for current_cell in row:
-            e = header[current_cell.column-2].value
+            e = header[current_cell.column-data_col].value
             buffer[e] = current_cell.value
+            if (e == ud.date_stamp) & (buffer[e] == None):
+                stop = True
+                break
             buff_str += '{0:<25s}'.format(str(buffer[e])[:24])
         buff_str += '\n'
         result.append(buffer)
     
     print('\n\n' + buff_str)
     print('\nProcessed {} lines\n\n'.format(line_count))
-    
+
     return result
 
 
