@@ -10,7 +10,7 @@ import user_data as ud
 fd = os.path.sep  # folder delimiter
 
 
-def reader(file_name, verbose=True):
+def reader(file_name, current_month = dt.datetime.now().month, verbose=True):
     result = []
     current_path = os.getcwd() + fd + ud.data_path + fd + current_month + fd
     try: 
@@ -69,13 +69,15 @@ def reader(file_name, verbose=True):
         print('\n\n***********\n\n', file=sys.stderr)
     return result
 
-
+def main_csv():
+    current_month = '{:02d}'.format( int( input("Please enter month:")))
+    csv_name = input("Please enter csv file name:")
+    result = reader(csv_name, current_month=current_month)
+    return result
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: 
-        current_month = '{:02d}'.format( int( input("Please enter month:")))
-        csv_name = input("Please enter csv file name:")
-        result = reader(csv_name)
+        result = main_csv()
         print('List of lenght: ' + str(len(result)))
     elif sys.argv[1] == "hello":
         print("hello world!")

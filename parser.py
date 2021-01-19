@@ -40,5 +40,10 @@ if __name__ == "__main__":
         inp = input()
         if inp in ['q', 'exit', '0']:
             break
+        elif inp == '1':
+            result = csv_reader.main_csv()
+        elif inp == '2':
+            xl_reader.main_xl()
         elif inp == '3':
             display_menu() 
+

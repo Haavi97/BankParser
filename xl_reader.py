@@ -48,13 +48,16 @@ def xlsx_reader(header_row, data_row, data_col, fn):
 
     return result
 
+def main_xl():
+    current_month = '{:02d}'.format( int( input("Please enter month:")))
+    xl_name = input("Please enter xl file name:")
+    file_name = ud.cwd + ud.fd + ud.data_path + ud.fd + current_month + ud.fd + xl_name
+    result = xlsx_reader(6, 8, 2, check_file(file_name))
+    return result
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: 
-        current_month = '{:02d}'.format( int( input("Please enter month:")))
-        xl_name = input("Please enter xl file name:")
-        file_name = ud.cwd + ud.fd + ud.data_path + ud.fd + current_month + ud.fd + xl_name
-        result = xlsx_reader(6, 8, 2, check_file(file_name))
+        result = main_xl()
         print('List of lenght: ' + str(len(result)))
     elif sys.argv[1] == "hello":
         print("hello world!")
