@@ -12,7 +12,7 @@ fd = os.path.sep  # folder delimiter
 
 def reader(file_name, current_month = dt.datetime.now().month, verbose=True):
     result = []
-    current_path = os.getcwd() + fd + ud.data_path + fd + current_month + fd
+    current_path = os.getcwd() + fd + ud.data_path + fd + str(current_month) + fd
     try: 
         with open(current_path + file_name) as csv_file:
             csv_reader = csv.DictReader(csv_file, delimiter=";")

@@ -1,20 +1,9 @@
 import sys
 from openpyxl import load_workbook
-from xls2xlsx import XLS2XLSX
 
 
 import user_data as ud
-
-
-
-def check_file(fname):
-    if fname[-1] != 'x':
-        fname_x = fname + 'x'
-        x2x = XLS2XLSX(fname)
-        x2x.to_xlsx(fname_x)
-        return fname_x
-    else:
-        return fname
+from xl_helpers import check_file
 
 
 def xlsx_reader(header_row, data_row, data_col, fn):
@@ -48,12 +37,14 @@ def xlsx_reader(header_row, data_row, data_col, fn):
 
     return result
 
+
 def main_xl():
     current_month = '{:02d}'.format( int( input("Please enter month:")))
     xl_name = input("Please enter xl file name:")
     file_name = ud.cwd + ud.fd + ud.data_path + ud.fd + current_month + ud.fd + xl_name
     result = xlsx_reader(6, 8, 2, check_file(file_name))
     return result
+
 
 if __name__ == "__main__":
     if len(sys.argv) == 1: 
