@@ -9,7 +9,8 @@ from xl_helpers import check_file
 def xlsx_reader(header_row, data_row, data_col, fn):
     workbook = load_workbook(filename=fn, data_only=True)
     sheet = workbook.active
-    header = list(list(sheet.iter_rows(min_row=header_row, max_row=header_row, min_col=2))[0])
+    header = list(list(sheet.iter_rows(
+        min_row=header_row, max_row=header_row, min_col=2))[0])
 
     result = []
     buff_str = ''
@@ -31,7 +32,7 @@ def xlsx_reader(header_row, data_row, data_col, fn):
             buff_str += '{0:<25s}'.format(str(buffer[e])[:24])
         buff_str += '\n'
         result.append(buffer)
-    
+
     print('\n\n' + buff_str)
     print('\nProcessed {} lines\n\n'.format(line_count))
 
@@ -39,15 +40,16 @@ def xlsx_reader(header_row, data_row, data_col, fn):
 
 
 def main_xl():
-    current_month = '{:02d}'.format( int( input("Please enter month:")))
+    current_month = '{:02d}'.format(int(input("Please enter month:")))
     xl_name = input("Please enter xl file name:")
-    file_name = ud.cwd + ud.fd + ud.data_path + ud.fd + current_month + ud.fd + xl_name
+    file_name = ud.cwd + ud.fd + ud.data_path + \
+        ud.fd + current_month + ud.fd + xl_name
     result = xlsx_reader(6, 8, 2, check_file(file_name))
     return result
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 1: 
+    if len(sys.argv) == 1:
         result = main_xl()
         print('List of lenght: ' + str(len(result)))
     elif sys.argv[1] == "hello":

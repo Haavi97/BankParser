@@ -8,8 +8,14 @@ from xl_helpers import check_file
 
 
 def xl_writer(current_month, data,  fn=ud.fn):
+    current_month = str(current_month)
     workbook = load_workbook(filename=fn, data_only=True)
-    sheet = workbook[str(current_month)]
+    try:
+        sheet = workbook[current_month]
+    except KeyError:
+        print("Creating worksheet: \"" + current_month + "\"")
+        workbook.create_sheet(current_month)
+        sheet = workbook[current_month]
     for element in data:
         f_append(sheet, element)
     workbook.save(fn)
@@ -19,9 +25,8 @@ def f_append(sheet, element):
     row = []
     for e in ud.xl_month_fileds:
         try:
-            current = element[e]
+            current = element[ud.xl_csv_map[e]]
         except:
             current = ""
         row.append(current)
     sheet.append(row)
-    

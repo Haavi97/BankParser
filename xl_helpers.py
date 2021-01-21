@@ -9,4 +9,3 @@ def check_file(fname):
         return fname_x
     else:
         return fname
-
