@@ -16,6 +16,7 @@ def xl_writer(current_month, data,  fn=ud.fn):
         print("Creating worksheet: \"" + current_month + "\"")
         workbook.create_sheet(current_month)
         sheet = workbook[current_month]
+        sheet.append(ud.xl_month_fileds)
     for element in data:
         f_append(sheet, element)
     workbook.save(fn)
