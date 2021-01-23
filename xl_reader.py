@@ -11,6 +11,7 @@ def xlsx_reader(header_row, data_row, data_col, fn):
     sheet = workbook.active
     header = list(list(sheet.iter_rows(
         min_row=header_row, max_row=header_row, min_col=2))[0])
+    print(header[0].value)
 
     result = []
     buff_str = ''
@@ -46,7 +47,10 @@ def main_xl():
     xl_name = input("Please enter xl file name:")
     file_name = ud.cwd + ud.fd + ud.data_path + \
         ud.fd + current_month + ud.fd + xl_name
-    result = xlsx_reader(6, 8, 2, check_file(file_name))
+    result = xlsx_reader(ud.xl_header_row,
+                         ud.xl_data_row,
+                         ud.xl_data_row - ud.xl_header_row,
+                         check_file(file_name))
     return result
 
 

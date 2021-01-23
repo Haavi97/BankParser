@@ -16,15 +16,15 @@ def xl_writer(current_month, data,  fn=ud.fn, fmap='csv'):
         print("Creating worksheet: \"" + current_month + "\"")
         workbook.create_sheet(current_month)
         sheet = workbook[current_month]
-        sheet.append(ud.xl_month_fileds)
+        sheet.append(ud.xl_month_fields)
     for element in data:
-        f_append(sheet, element, ff)
+        f_append(sheet, element, fmap)
     workbook.save(fn)
 
 
 def f_append(sheet, element, fmap):
     row = []
-    if ff == 'csv':
+    if fmap == 'csv':
         fmaps = ud.xl_csv_map
     else:
         fmaps = ud.xl_xl_map
