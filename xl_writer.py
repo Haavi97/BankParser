@@ -26,8 +26,10 @@ def f_append(sheet, element, fmap):
     row = []
     if fmap == 'csv':
         fmaps = ud.xl_csv_map
-    else:
+    elif fmap == 'xl':
         fmaps = ud.xl_xl_map
+    else:
+        print("Wrong fmap")
     for e in ud.xl_month_fields:
         try:
             current = element[fmaps[e]]

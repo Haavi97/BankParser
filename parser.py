@@ -70,7 +70,10 @@ if __name__ == "__main__":
                 else:
                     file_name = ud.cwd + ud.fd + ud.data_path + \
                         ud.fd + current_month + ud.fd + fn
-                    read = xl_reader.xlsx_reader(6, 8, 2, xl_reader.check_file(file_name))
+                    read = xl_reader.xlsx_reader(ud.xl_header_row,
+                                                 ud.xl_data_row,
+                                                 ud.xl_data_row - ud.xl_header_row,
+                                                 xl_reader.check_file(file_name))
                     xl_writer.xl_writer(current_month, read, fmap='xl')
         else:
             print("Please, choose a valid number")

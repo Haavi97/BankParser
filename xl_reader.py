@@ -11,7 +11,6 @@ def xlsx_reader(header_row, data_row, data_col, fn):
     sheet = workbook.active
     header = list(list(sheet.iter_rows(
         min_row=header_row, max_row=header_row, min_col=2))[0])
-    print(header[0].value)
 
     result = []
     buff_str = ''
