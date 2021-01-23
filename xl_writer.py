@@ -7,7 +7,7 @@ import user_data as ud
 from xl_helpers import check_file
 
 
-def xl_writer(current_month, data,  fn=ud.fn):
+def xl_writer(current_month, data,  fn=ud.fn, fmap='csv'):
     current_month = str(current_month)
     workbook = load_workbook(filename=fn, data_only=True)
     try:
@@ -18,16 +18,21 @@ def xl_writer(current_month, data,  fn=ud.fn):
         sheet = workbook[current_month]
         sheet.append(ud.xl_month_fileds)
     for element in data:
-        f_append(sheet, element)
+        f_append(sheet, element, ff)
     workbook.save(fn)
 
 
-def f_append(sheet, element):
+def f_append(sheet, element, fmap):
     row = []
-    for e in ud.xl_month_fileds:
+    if ff == 'csv':
+        fmaps = ud.xl_csv_map
+    else:
+        fmaps = ud.xl_xl_map
+    for e in ud.xl_month_fields:
         try:
-            current = element[ud.xl_csv_map[e]]
+            current = element[fmaps[e]]
         except:
             current = ""
         row.append(current)
     sheet.append(row)
+

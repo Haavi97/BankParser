@@ -26,9 +26,11 @@ def xlsx_reader(header_row, data_row, data_col, fn):
         for current_cell in row:
             e = header[current_cell.column-data_col].value
             buffer[e] = current_cell.value
-            if (e == ud.date_stamp) & (buffer[e] == None):
-                stop = True
-                break
+            if buffer[e] == None:
+                buffer[e] = '-'
+                if (e == ud.date_stamp):
+                    stop = True
+                    break
             buff_str += '{0:<25s}'.format(str(buffer[e])[:24])
         buff_str += '\n'
         result.append(buffer)
