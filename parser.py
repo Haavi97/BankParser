@@ -36,6 +36,7 @@ def display_menu():
     print_wl('03. Display menu')
     print_wl('04. Write read data into xlsx file')
     print_wl('05. Read and write all month files')
+    print_wl('06. Read defaults')
     print_wl('**. q, exit, 0\n\n')
 
 
@@ -75,5 +76,9 @@ if __name__ == "__main__":
                                                  ud.xl_data_row - ud.xl_header_row,
                                                  xl_reader.check_file(file_name))
                     xl_writer.xl_writer(current_month, read, fmap='xl')
+        elif inp == '6':
+            result = csv_reader.reader(ud.defaults_file,
+                                       path=ud.defaults_path,
+                                       fl=ud.defaults_fields_list)
         else:
             print("Please, choose a valid number")

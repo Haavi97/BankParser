@@ -10,16 +10,19 @@ import user_data as ud
 fd = os.path.sep  # folder delimiter
 
 
-def reader(file_name, current_month=dt.datetime.now().month, verbose=True):
+def reader(file_name, current_month=dt.datetime.now().month,
+           verbose=True, path=None, fl=ud.fields_list):
     result = []
     current_path = os.getcwd() + fd + ud.data_path + fd + str(current_month) + fd
+    if path != None:
+        current_path = path
     try:
         with open(current_path + file_name) as csv_file:
             csv_reader = csv.DictReader(csv_file, delimiter=";")
 
             if verbose:
                 print('Column names are:')
-                for e in ud.fields_list:
+                for e in fl:
                     print('{0:<25s}'.format(e[:24]), end='')
                 print('')
 
@@ -30,7 +33,7 @@ def reader(file_name, current_month=dt.datetime.now().month, verbose=True):
                 line_count += 1
                 print('Columns read: {}'.format(line_count), end='\r')
                 buffer = {}
-                for e in ud.fields_list:
+                for e in fl:
                     value = cp.deepcopy(row[e])
                     try:
                         if value.isnumeric():
