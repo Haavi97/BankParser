@@ -9,9 +9,10 @@ from xl_writer import xl_writer, f_append
 from xl_helpers import check_file, xl_map
 import user_data as ud
 
+FORMAT = '%(asctime)-15s %(name)s - %(levelname)s - %(message)s'
 logging.basicConfig(filename='app.log',
                     filemode='a',
-                    format='%(name)s - %(levelname)s - %(message)s')
+                    format=FORMAT)
 
 output = sys.stdout
 
@@ -67,7 +68,7 @@ def assign_defaults(data, defaults, ft='csv'):
     try:
         for e in data_new:
             for d in defaults:
-                suma_i = int(float(e[suma])*100)
+                suma_i = int(e[suma]*100)
                 dc = abs(suma_i)/suma_i
                 if (e[name] == d[ud.def_name]) & (dc == int(d[ud.def_dc])):
                     for label in ud.def_labs:
