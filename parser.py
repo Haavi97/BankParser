@@ -64,13 +64,18 @@ def assign_defaults(data, defaults, ft='csv'):
     name = ud.csv_name if ft == 'csv' else ud.xls_name
     suma = ud.csv_suma if ft == 'csv' else ud.xls_suma
     data_new = cp.deepcopy(data)
-    for e in data_new:
-        for d in defaults:
-            suma_i = int(e[suma])
-            dc = abs(suma_i)/suma_i
-            if (e[name] == d[ud.def_name]) & (dc == int(d[ud.def_dc])):
-                for label in ud.def_labs:
-                    e[label] = d[label]
+    try:
+        for e in data_new:
+            for d in defaults:
+                suma_i = int(float(e[suma])*100)
+                dc = abs(suma_i)/suma_i
+                if (e[name] == d[ud.def_name]) & (dc == int(d[ud.def_dc])):
+                    for label in ud.def_labs:
+                        e[label] = d[label]
+    except:
+        e = sys.exc_info()[0]
+        print_wl_error("An error ocurred assigning defaults.")
+        print_wl_error("Exception message: {}".format(e))
     return data_new
 
 
