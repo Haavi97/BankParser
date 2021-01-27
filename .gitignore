@@ -3,4 +3,5 @@ user_data.py
 /01 Andmed
 /tutorials
 /__pycache__
+/.idea
 app.log

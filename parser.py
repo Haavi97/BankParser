@@ -1,5 +1,4 @@
 import sys
-import os
 import logging
 import copy as cp
 
@@ -67,12 +66,24 @@ def assign_defaults(data, defaults, ft='csv'):
     data_new = cp.deepcopy(data)
     try:
         for e in data_new:
+            found = False
             for d in defaults:
-                suma_i = int(e[suma]*100)
-                dc = abs(suma_i)/suma_i
-                if (e[name] == d[ud.def_name]) & (dc == int(d[ud.def_dc])):
-                    for label in ud.def_labs:
-                        e[label] = d[label]
+                if not found:
+                    suma_i = int(e[suma]*100)
+                    dc = abs(suma_i)/suma_i
+                    if d[ud.def_description] == '--':
+                        if (e[name] == d[ud.def_name]) & (dc == int(d[ud.def_dc])):
+                            for label in ud.def_labs:
+                                e[label] = d[label]
+                            found = True
+                    else:
+                        p1 = (e[name] == d[ud.def_name])
+                        p2 = (dc == int(d[ud.def_dc]))
+                        p3 = (e[ud.def_description] == d[ud.def_description])
+                        if p1 & p2 & p3:
+                            for label in ud.def_labs:
+                                e[label] = d[label]
+                            found = True
     except:
         e = sys.exc_info()[0]
         print_wl_error("An error ocurred assigning defaults.")
@@ -122,16 +133,17 @@ if __name__ == "__main__":
             elif inp == '7':
                 current_month = '{:02d}'.format(
                     int(input("Please enter month:")))
+                defaults_read = reader(ud.defaults_file,
+                                       path=ud.defaults_path,
+                                       fl=ud.defaults_fields_list)
                 for fn in ud.file_names:
                     if is_csv(fn):
                         read = reader(
                             fn, current_month=current_month)
-                        defaults_read = reader(ud.defaults_file,
-                                               path=ud.defaults_path,
-                                               fl=ud.defaults_fields_list)
                         defualts_assigned = assign_defaults(
                             read, defaults_read)
-                        xl_writer(current_month, defualts_assigned, fmap='csv_def')
+                        xl_writer(current_month, defualts_assigned,
+                                  fmap='csv_def')
                     else:
                         file_name = ud.cwd + ud.fd + ud.data_path + \
                             ud.fd + current_month + ud.fd + fn
@@ -139,9 +151,6 @@ if __name__ == "__main__":
                                            ud.xl_data_row,
                                            ud.xl_data_row - ud.xl_header_row,
                                            check_file(file_name))
-                        defaults_read = reader(ud.defaults_file,
-                                               path=ud.defaults_path,
-                                               fl=ud.defaults_fields_list)
                         defualts_assigned = assign_defaults(
                             read, defaults_read, ft='xls')
                         xl_writer(

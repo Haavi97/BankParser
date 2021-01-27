@@ -23,7 +23,7 @@ def reader(file_name, current_month=dt.datetime.now().month,
             if verbose:
                 print('Column names are:')
                 for e in fl:
-                    print('{0:<25s}'.format(e[:24]), end='')
+                    print('{0:<20s}'.format(e[:19]), end='')
                 print('')
 
             buff_str = ''
@@ -45,7 +45,7 @@ def reader(file_name, current_month=dt.datetime.now().month,
                         else:
                             buffer[e] = value
                         if verbose:
-                            buff_str += '{0:<25s}'.format(str(buffer[e])[:24])
+                            buff_str += '{0:<20s}'.format(str(buffer[e])[:19])
 
                     except ValueError:
                         print('\n\n***********\n\n', file=sys.stderr)
