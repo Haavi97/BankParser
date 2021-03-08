@@ -9,6 +9,8 @@ import user_data as ud
 
 fd = os.path.sep  # folder delimiter
 
+class FieldNameError(Exception):
+    pass
 
 def reader(file_name, current_month=dt.datetime.now().month,
            verbose=True, path=None, fl=ud.fields_list):
@@ -19,11 +21,14 @@ def reader(file_name, current_month=dt.datetime.now().month,
     try:
         with open(current_path + file_name) as csv_file:
             csv_reader = csv.DictReader(csv_file, delimiter=";")
+            for n in fl:
+                if n not in csv_reader.fieldnames:
+                    raise FieldNameError('Field names do not match')
 
             if verbose:
                 print('Column names are:')
                 for e in fl:
-                    print('{0:<20s}'.format(e[:19]), end='')
+                    print('{0:<21s}'.format(e[:20]), end='')
                 print('')
 
             buff_str = ''
@@ -45,7 +50,7 @@ def reader(file_name, current_month=dt.datetime.now().month,
                         else:
                             buffer[e] = value
                         if verbose:
-                            buff_str += '{0:<20s}'.format(str(buffer[e])[:19])
+                            buff_str += '{0:<21s}'.format(str(buffer[e])[:20])
 
                     except ValueError:
                         print('\n\n***********\n\n', file=sys.stderr)
@@ -56,11 +61,11 @@ def reader(file_name, current_month=dt.datetime.now().month,
                 buff_str += '\n'
 
                 result.append(buffer)
-            print('{0:20}'.format(''), end='\r')
-            print('\n\n' + buff_str)
-
             if verbose:
-                print('\nProcessed {} lines\n\n'.format(line_count))
+                print('{0:20}'.format(''), end='\r')
+                print('\n\n' + buff_str)
+
+            print('\nProcessed {} lines\n\n'.format(line_count))
     except FileNotFoundError:
         print('\n\n***********\n\n', file=sys.stderr)
         print('File Not Found Error.', file=sys.stderr)
@@ -68,7 +73,10 @@ def reader(file_name, current_month=dt.datetime.now().month,
         print('Files in this directory:')
         for f in os.listdir(current_path):
             print(f)
-        print('Files in this directory:', file=sys.stderr)
+        print('\n\n***********\n\n', file=sys.stderr)
+    except FieldNameError:
+        print('\n\n***********\n\n', file=sys.stderr)
+        print('Field names do not match.', file=sys.stderr)
         print('\n\n***********\n\n', file=sys.stderr)
     return result
 

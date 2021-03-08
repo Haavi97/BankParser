@@ -6,7 +6,7 @@ import user_data as ud
 from xl_helpers import check_file
 
 
-def xlsx_reader(header_row, data_row, data_col, fn):
+def xlsx_reader(header_row, data_row, data_col, fn, verbose=False):
     workbook = load_workbook(filename=fn, data_only=True)
     sheet = workbook.active
     header = list(list(sheet.iter_rows(
@@ -34,9 +34,9 @@ def xlsx_reader(header_row, data_row, data_col, fn):
             buff_str += '{0:<25s}'.format(str(buffer[e])[:24])
         buff_str += '\n'
         result.append(buffer)
-
-    print('\n\n' + buff_str)
-    print('\nProcessed {} lines\n\n'.format(line_count))
+    if verbose:
+        print('\n\n' + buff_str)
+        print('\nProcessed {} lines\n\n'.format(line_count))
 
     return result
 
